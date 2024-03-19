@@ -8,7 +8,14 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.8"
 google-cloud-storage = "^2.15.0"
+apache-airflow = "2.3.0"
+psycopg2-binary = "^2.9.3"
+pendulum = "^2.1.2"
 
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+isort = "^5.10.1"
+pytest = "^7.4.3"
 
 [build-system]
 requires = ["poetry-core"]
