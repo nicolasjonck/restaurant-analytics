@@ -1,0 +1,14 @@
+restaurant_dbt:
+  outputs:
+    dev:
+      dataset: restaurant_tables
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      keyfile: /home/root/.gcp_keys/restaurant-airflow.json
+      location: EU
+      method: service-account
+      priority: interactive
+      project: restaurant-analytics-417114
+      threads: 4
+      type: bigquery
+  target: dev

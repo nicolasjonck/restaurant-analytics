@@ -6,11 +6,14 @@ authors = ["Nicolas Jonckheere <nicolasjonckheere22@hotmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "3.10.12"
 google-cloud-storage = "^2.15.0"
-apache-airflow = "2.3.0"
 psycopg2-binary = "^2.9.3"
 pendulum = "^2.1.2"
+dbt-bigquery = "^1.7.6"
+dbt-core = "^1.7.10"
+apache-airflow = "^2.8.3"
+
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
@@ -20,3 +23,23 @@ pytest = "^7.4.3"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.black]
+line-length = 160
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 160
+multi_line_output = 3
+include_trailing_comma = true
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "."
+]
+markers = ["optional: not required, nor saved in test_output.txt"]
+
+[virtualenvs]
+in-project = true
