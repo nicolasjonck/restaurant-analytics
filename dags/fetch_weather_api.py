@@ -1,3 +1,7 @@
+from airflow import DAG
+import pendulum
+from airflow.operators.python import PythonOperator
+
 import openmeteo_requests
 import requests_cache
 import pandas as pd
@@ -78,9 +82,26 @@ def retrieve_weather_data(date: str) -> None:
     )
 
     # TODO(developer): Set table_id to the ID of the table to create.
-    table_id = f"{os.environ['PROJECT_ID']}.weather_data.your_table_name"
+    table_id = f"{os.environ['PROJECT_ID']}.weather_data.daily_temperature_rain"
 
     job = client.load_table_from_dataframe(
         hourly_dataframe, table_id, job_config=job_config
     )  # Make an API request.
     job.result()  # Wait for the job to complete.
+
+with DAG(
+    "weather_data",
+    start_date=pendulum.yesterday(),
+    description="A task to upload weather data daily",
+    catchup=False,
+    schedule_interval="@daily",
+    default_args={"depends_on_past": False},
+) as dag:
+
+    get_weather_data_and_upload_to_bq = PythonOperator(
+        task_id="get_weather_data_and_upload_to_bq_task",
+        python_callable=retrieve_weather_data,
+        op_kwargs={"date": "2024-03-20"},
+    )
+
+    get_weather_data_and_upload_to_bq
