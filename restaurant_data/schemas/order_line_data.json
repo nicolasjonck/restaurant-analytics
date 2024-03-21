@@ -1,0 +1,23 @@
+[
+    {"name": "id_order_line", "field_type": "INTEGER", "mode": "REQUIRED"},
+    {"name": "id_order", "field_type": "INTEGER", "mode": "NULLABLE"},
+    {"name": "date_opended", "field_type": "TIMESTAMP", "mode": "NULLABLE"},
+    {"name": "date_created", "field_type": "TIMESTAMP", "mode": "NULLABLE"},
+    {"name": "m_quantity", "field_type": "FLOAT", "mode": "NULLABLE"},
+    {"name": "m_unit_price", "field_type": "FLOAT", "mode": "NULLABLE"},
+    {"name": "m_unit_price_exc_vat", "field_type": "FLOAT", "mode": "NULLABLE"},
+    {"name": "m_total_price_inc_vat", "field_type": "FLOAT", "mode": "NULLABLE"},
+    {"name": "m_total_price_exc_vat", "field_type": "FLOAT", "mode": "NULLABLE"},
+    {"name": "m_tax_percent", "field_type": "FLOAT", "mode": "NULLABLE"},
+    {"name": "m_discount_amount", "field_type": "FLOAT", "mode": "NULLABLE"},
+    {"name": "dim_type", "field_type": "STRING", "mode": "NULLABLE"},
+    {"name": "dim_category", "field_type": "STRING", "mode": "NULLABLE"},
+    {"name": "dim_name", "field_type": "STRING", "mode": "NULLABLE"},
+    {"name": "dim_status", "field_type": "STRING", "mode": "NULLABLE"},
+    {"name": "dim_feature_type", "field_type": "STRING", "mode": "NULLABLE"},
+    {"name": "dim_unit_measure", "field_type": "STRING", "mode": "NULLABLE"},
+    {"name": "dim_unit_measure_display", "field_type": "STRING", "mode": "NULLABLE"},
+    {"name": "dim_category_translated", "field_type": "STRING", "mode": "NULLABLE"},
+    {"name": "dim_name_translated", "field_type": "STRING", "mode": "NULLABLE"}
+  ]
+  

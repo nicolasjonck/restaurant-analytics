@@ -1,0 +1,14 @@
+[
+    {"name": "id_order", "field_type": "INTEGER", "mode": "REQUIRED"},
+    {"name": "id_store", "field_type": "INTEGER", "mode": "NULLABLE"},
+    {"name": "id_table", "field_type": "INTEGER", "mode": "NULLABLE"},
+    {"name": "id_waiter", "field_type": "INTEGER", "mode": "NULLABLE"},
+    {"name": "id_device", "field_type": "INTEGER", "mode": "NULLABLE"},
+    {"name": "date_opened", "field_type": "TIMESTAMP", "mode": "NULLABLE"},
+    {"name": "date_closed", "field_type": "TIMESTAMP", "mode": "NULLABLE"},
+    {"name": "dim_status", "field_type": "STRING", "mode": "NULLABLE"},
+    {"name": "dim_source", "field_type": "STRING", "mode": "NULLABLE"},
+    {"name": "m_nb_customer", "field_type": "INTEGER", "mode": "NULLABLE"},
+    {"name": "m_cached_payed", "field_type": "FLOAT", "mode": "NULLABLE"},
+    {"name": "m_cached_price", "field_type": "FLOAT", "mode": "NULLABLE"}
+]

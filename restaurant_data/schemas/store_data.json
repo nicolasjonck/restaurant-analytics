@@ -1,0 +1,28 @@
+[
+    {
+      "name": "id_store",
+      "field_type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "date_created",
+      "field_type": "TIMESTAMP",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "dim_zipcode",
+      "field_type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "dim_country",
+      "field_type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "dim_currency",
+      "field_type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ]
+  
