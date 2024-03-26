@@ -1,0 +1,30 @@
+
+version: 2
+
+models:
+  - name: tb_sales
+    description: "A starter dbt model"
+    columns:
+      - name: id_order
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: id_store
+        description: "This is the id_store of the order"
+        tests:
+          - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+            combination_of_columns:
+              - id_table
+              - id_order
+
+  - name: tb_waiter
+    description: waiter data information
+    columns:
+      - name: id_waiter
+        description: "the primary key"
+        tests:
+          - unique
+          - not null
