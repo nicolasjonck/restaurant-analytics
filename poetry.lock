@@ -1056,6 +1056,19 @@ test = ["certifi", "pretend", "pytest (>=6.2.0)", "pytest-benchmark", "pytest-co
 test-randomorder = ["pytest-randomly"]
 
 [[package]]
+name = "dbt"
+version = "1.0.0.37.4"
+description = "The dbt Cloud CLI - an ELT tool for running SQL transformations and data models in dbt Cloud. For more documentation on these commands, visit: docs.getdbt.com"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "dbt-1.0.0.37.4.tar.gz", hash = "sha256:1a4a794d2bdb86c6b1399ff03c786c253fa682769aac2330aafdaea6ca5a340a"},
+]
+
+[package.dependencies]
+setuptools = ">=61.2"
+
+[[package]]
 name = "dbt-bigquery"
 version = "1.7.6"
 description = "The Bigquery adapter plugin for dbt"
@@ -4982,4 +4995,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "3.10.12"
-content-hash = "ff0f37a1a27090013d1b52f926e2b0b96d2d6fcba486abbd448a882868d9dd35"
+content-hash = "7e653df8c5c1df41ea126dbd19fab97629f7a3fbb89d1625077bc49d1c0f34f9"
