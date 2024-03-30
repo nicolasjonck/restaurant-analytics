@@ -5,8 +5,13 @@ models:
   - name: tb_sales
     description: "A starter dbt model"
     columns:
+      - name: id_item
+        description: "This is the primary key of the table"
+        tests:
+          - unique
+          - not_null
       - name: id_order
-        description: "The primary key for this table"
+        description: "This is the id of the order"
         tests:
           - unique
           - not_null

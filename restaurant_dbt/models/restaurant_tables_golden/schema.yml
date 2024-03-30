@@ -1,0 +1,27 @@
+version: 2
+
+models:
+ - name: tb_sales_final
+   description:
+   columns:
+    - name: id_item
+        description: "This is the primary key of the table"
+        tests:
+          - unique
+          - not_null
+    - name: id_order
+      description: "This is the id of the order"
+      tests:
+        - unique
+        - not_null
+    - name: id_store
+      description: "This is the id_store of the order"
+      tests:
+        - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+            combination_of_columns:
+              - id_table
+              - id_order
+              - id_order
+

@@ -8,7 +8,7 @@
 
 
 SELECT
-  od.id_order_line as item_id,
+  od.id_order_line as id_item,
   od.dim_name_translated as item_name,
   od.dim_category_translated as item_category,
   od.m_unit_price as item_price,
