@@ -9,14 +9,14 @@
 SELECT
   id_waiter,
   SUM(IF(
-    cached_payed -cached_price > 0,
-    cached_payed - cached_price ,
+    payed_price - order_price > 0,
+    payed_price - order_price ,
     0
   )) AS sum_tip,
 
   SUM(IF(
-    cached_payed - cached_price < 0,
-    cached_payed - cached_price ,
+    payed_price - order_price < 0,
+    payed_price - order_price ,
     0
   )) AS sum_unpayed_order,
 
@@ -30,7 +30,7 @@ SELECT
 
 FROM {{ ref ('tb_sales') }}
 WHERE id_waiter IS NOT NULL
-GROUP BY 1
+GROUP BY id_waiter
 
 
 /*

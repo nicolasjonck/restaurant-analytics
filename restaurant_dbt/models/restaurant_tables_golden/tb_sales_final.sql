@@ -51,3 +51,5 @@ ON
 LEFT JOIN weather_data AS w
 ON DATE(s.order_date_closed) = DATE(w.date_day)
 WHERE s.order_price > 0
+
+QUALIFY ROW_NUMBER() OVER(PARTITION BY  id_order, id_store ORDER BY  order_date_closed DESC ) = 1
