@@ -8,15 +8,12 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "3.10.12"
 google-cloud-storage = "^2.15.0"
-<<<<<<< HEAD
 google-cloud-bigquery = "^3.19.0"
-=======
 psycopg2-binary = "^2.9.3"
 pendulum = "^2.1.2"
 dbt-bigquery = "^1.7.6"
 dbt-core = "^1.7.10"
 apache-airflow = "^2.8.3"
->>>>>>> b54441b17b9406ff158c156e50f955b65604f80c
 
 
 [tool.poetry.dev-dependencies]
