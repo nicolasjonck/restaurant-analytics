@@ -21,7 +21,7 @@ WITH weather_data AS (
 SELECT
   item_id,
   item_name,
-  item_category,
+  consolidated_category,
   item_price,
   item_quantity,
   s.id_order,
@@ -49,5 +49,9 @@ JOIN {{ source ('restaurant_raw_data', 'payments')}} AS p
 ON
   s.id_order = p.id_order
 LEFT JOIN weather_data AS w
-ON DATE(s.order_date_closed) = DATE(w.date_day)
+ON
+  DATE(s.order_date_closed) = DATE(w.date_day)
+JOIN {{ source ('restaurant_silver_data', 'tb_item_categories')}} AS c
+ON
+  s.item_category = c.original_category
 WHERE s.order_price > 0

@@ -33,3 +33,15 @@ models:
         tests:
           - unique
           - not null
+
+  - name: tb_item_categories
+    description: consolidated item tb_item_categories
+    columns:
+      - name: original_category
+        description: source name of the category
+        tests:
+          - not null
+      - name: consolidated_category
+        description: consolidated item category
+        tests:
+          - not null
