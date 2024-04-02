@@ -9,7 +9,7 @@ sources:
           - name: orders
             description: daily orders
 
-          - name: orders_details
+          - name: order_details
             description: line details of each order
 
           - name: payments
@@ -17,6 +17,17 @@ sources:
 
           - name: stores
             description: stores in which orders are made
+
+    - name: restaurant_silver_data
+      description: aggregated and cleaned restaurant data
+      database: restaurant-analytics-417114
+      schema: restaurant_tables_silver
+      tables:
+          - name: tb_sales
+            description: aggregation of cleaned order and order_details tables
+
+          - name: tb_waiter
+            description: aggregation of data for waiter
 
     - name: weather_api_data
       description: daily data coming from weather api

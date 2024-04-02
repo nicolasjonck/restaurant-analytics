@@ -4,7 +4,7 @@ restaurant_dbt:
       dataset: restaurant_tables_silver
       job_execution_timeout_seconds: 300
       job_retries: 1
-      keyfile: /home/apollinejauffret/.gcp_keys/restaurant_airflow.json
+      keyfile: /home/nicolasjonckheere22/.gcp_keys/restaurant-airflow.json
       location: EU
       method: service-account
       priority: interactive
@@ -16,7 +16,7 @@ restaurant_dbt:
       dataset: restaurant_tables_gold
       job_execution_timeout_seconds: 300
       job_retries: 1
-      keyfile: /home/apollinejauffret/.gcp_keys/restaurant_airflow.json
+      keyfile: /home/nicolasjonckheere22/.gcp_keys/restaurant-airflow.json
       location: EU
       method: service-account
       priority: interactive
