@@ -1,0 +1,10 @@
+[
+    {"name": "id_pay", "field_type": "INTEGER", "mode": "REQUIRED"},
+    {"name": "id_order", "field_type": "INTEGER", "mode": "NULLABLE"},
+    {"name": "dim_status", "field_type": "STRING", "mode": "NULLABLE"},
+    {"name": "dim_type", "field_type": "STRING", "mode": "NULLABLE"},
+    {"name": "m_amount", "field_type": "FLOAT", "mode": "NULLABLE"},
+    {"name": "m_cashback", "field_type": "FLOAT", "mode": "NULLABLE"},
+    {"name": "m_credit", "field_type": "FLOAT", "mode": "NULLABLE"},
+    {"name": "date_created", "field_type": "TIMESTAMP", "mode": "NULLABLE"}
+]
