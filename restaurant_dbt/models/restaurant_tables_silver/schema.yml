@@ -27,8 +27,7 @@ models:
         description: "the primary key"
         tests:
           - unique
-<<<<<<< HEAD
-          - not null
+          - not_null
 
   - name: tb_item_categories
     description: consolidated item tb_item_categories
@@ -36,11 +35,11 @@ models:
       - name: original_category
         description: source name of the category
         tests:
-          - not null
+          - not_null
       - name: consolidated_category
         description: consolidated item category
         tests:
-          - not null
+          - not_null
 =======
           - not_null
 >>>>>>> 6aa94774fb8a0d71b222f0872f9c3052aaf5dda5
