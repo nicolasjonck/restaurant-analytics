@@ -1,40 +1,33 @@
-/*
-    Welcome to your first dbt model!
-    Did you know that you can also configure models directly within SQL files?
-    This will override configurations stated in dbt_project.yml
-
-    Try changing "table" to "view" below
-*/
-
+WITH order_tips AS (
+  SELECT 
+    id_order,
+    IF(p.m_amount - order_price > 0, p.m_amount - order_price, 0) AS order_tip,
+    SAFE_DIVIDE(IF(p.m_amount - order_price > 0, p.m_amount - order_price, 0), order_price) AS order_tip_percentage
+  FROM 
+    {{ source('restaurant_silver_data', 'tb_sales') }}
+  JOIN 
+    {{ source ('restaurant_raw_data', 'payments')}} p
+  USING(id_order)
+)
 SELECT
   id_waiter,
-  SUM(IF(
-    payed_price - order_price > 0,
-    payed_price - order_price ,
-    0
-  )) AS sum_tip,
-
-  SUM(IF(
-    payed_price - order_price < 0,
-    payed_price - order_price ,
-    0
-  )) AS sum_unpayed_order,
-
+  id_store,
   COUNT(DISTINCT CONCAT(id_table, id_order)) AS nb_tables,
+  SUM(number_customer) AS nb_customers,
+  COUNT(id_order) AS nb_orders,
+  ROUND(AVG(TIMESTAMP_DIFF(order_date_closed , order_date_opened , minute))) AS avg_order_duration_min,
+  ROUND(SUM(order_tip)) AS total_tips,
+  ROUND(AVG(order_tip), 2) AS avg_tip
+FROM 
+  {{ source('restaurant_silver_data', 'tb_sales') }}
+JOIN 
+  order_tips o
+USING(id_order)
+WHERE 
+  id_waiter IS NOT NULL AND id_waiter != 0
+GROUP BY 
+  id_waiter, id_store
+-- filter out outliers
+HAVING 
+  AVG(order_tip) < 15
 
-  AVG(TIMESTAMP_DIFF(order_date_opened , order_date_closed , hour)) AS avg_working_hours,
-
-  COUNT(DISTINCT CASE WHEN dim_status LIKE 'CLOSED' THEN id_order END)AS closed_orders,
-  COUNT(DISTINCT CASE WHEN dim_status NOT LIKE 'CLOSED' THEN id_order END)AS un_closed_orders,
-
-
-FROM {{ ref ('tb_sales') }}
-WHERE id_waiter IS NOT NULL
-GROUP BY id_waiter
-
-
-/*
-    Uncomment the line below to remove records with null `id` values
-*/
-
--- where id is not null

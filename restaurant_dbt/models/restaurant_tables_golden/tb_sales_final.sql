@@ -1,3 +1,5 @@
+{{ config(materialized='table') }}
+
 WITH weather_data AS (
   SELECT DATE(date) as date_day,
     round(avg(temperature_2m), 2) as avg_temp,
