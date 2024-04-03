@@ -40,6 +40,3 @@ models:
         description: consolidated item category
         tests:
           - not_null
-=======
-          - not_null
->>>>>>> 6aa94774fb8a0d71b222f0872f9c3052aaf5dda5
