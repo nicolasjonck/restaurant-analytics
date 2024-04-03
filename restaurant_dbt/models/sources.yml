@@ -29,6 +29,9 @@ sources:
           - name: tb_waiter
             description: aggregation of data for waiter
 
+          - name: tb_item_categories
+            description: consolidated item categories
+
     - name: weather_api_data
       description: daily data coming from weather api
       database: restaurant-analytics-417114
