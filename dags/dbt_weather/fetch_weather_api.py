@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 from airflow import DAG
 import pendulum
 from airflow.operators.python import PythonOperator
@@ -8,8 +10,28 @@ import pandas as pd
 from retry_requests import retry
 import os
 from google.cloud import bigquery
+import sys
+sys.path.append("/app/airflow")
+
+from dags.utils import create_dags_dependencies, create_tasks
+
+DBT_DIR = os.getenv("DBT_DIR")
 
 def retrieve_weather_data(date: str) -> None:
+   
+    # Construct a BigQuery client object.
+    client = bigquery.Client()
+
+    query = f"""
+        SELECT date 
+        FROM `restaurant-analytics-417114.weather_data.daily_temperature_rain` 
+        WHERE FORMAT_DATE('%Y-%m-%d',date) = '{date}'
+    """
+
+    # Check if data exists
+    rows = client.query_and_wait(query)  # Make an API request.
+    if rows.total_rows > 0:
+        return
 
 
     # Setup the Open-Meteo API client with cache and retry on error
@@ -19,13 +41,13 @@ def retrieve_weather_data(date: str) -> None:
 
     # Make sure all required weather variables are listed here
     # The order of variables in hourly or daily is important to assign them correctly below
-    url = "https://api.open-meteo.com/v1/meteofrance"
+    url = "https://archive-api.open-meteo.com/v1/archive"
     params = {
         "latitude": 48.8534,
         "longitude": 2.3488,
-        "hourly": ["temperature_2m", "relative_humidity_2m", "apparent_temperature", "precipitation", "rain", "snowfall"],
         "start_date": date,
-        "end_date": date
+        "end_date": date,
+        "hourly": ["temperature_2m", "relative_humidity_2m", "apparent_temperature", "precipitation", "rain", "snowfall"]
     }
     responses = openmeteo.weather_api(url, params=params)
 
@@ -58,12 +80,10 @@ def retrieve_weather_data(date: str) -> None:
     hourly_data["rain"] = hourly_rain
     hourly_data["snowfall"] = hourly_snowfall
 
+
     hourly_dataframe = pd.DataFrame(data = hourly_data)
 
-    #Load Dataframe to BQ
-    # Construct a BigQuery client object.
-    client = bigquery.Client()
-
+    # Load Dataframe to BQ
     job_config = bigquery.LoadJobConfig(
     # Specify a (partial) schema. All columns are always written to the
     # table. The schema is used to assist in data type definitions.
@@ -89,6 +109,7 @@ def retrieve_weather_data(date: str) -> None:
     )  # Make an API request.
     job.result()  # Wait for the job to complete.
 
+
 with DAG(
     "weather_data",
     start_date=pendulum.yesterday(),
@@ -101,7 +122,10 @@ with DAG(
     get_weather_data_and_upload_to_bq = PythonOperator(
         task_id="get_weather_data_and_upload_to_bq_task",
         python_callable=retrieve_weather_data,
-        op_kwargs={"date": "2024-03-20"},
+        op_kwargs={"date": "{{ ds }}"},
     )
-
-    get_weather_data_and_upload_to_bq
+    
+    with open(f"{DBT_DIR}/target/manifest.json") as f:
+        data = json.load(f)
+    dbt_tasks = create_tasks(data)
+    get_weather_data_and_upload_to_bq >> create_dags_dependencies(data, dbt_tasks) 

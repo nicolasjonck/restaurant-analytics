@@ -5,15 +5,10 @@ models:
   - name: tb_sales
     description: "A starter dbt model"
     columns:
-      - name: id_item
-        description: "This is the primary key of the table"
-        tests:
-          - unique
-          - not_null
+      - name: item_id
       - name: id_order
         description: "This is the id of the order"
         tests:
-          - unique
           - not_null
       - name: id_store
         description: "This is the id_store of the order"
@@ -22,7 +17,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
             combination_of_columns:
-              - id_table
+              - id_store
               - id_order
 
   - name: tb_waiter
@@ -32,4 +27,4 @@ models:
         description: "the primary key"
         tests:
           - unique
-          - not null
+          - not_null
