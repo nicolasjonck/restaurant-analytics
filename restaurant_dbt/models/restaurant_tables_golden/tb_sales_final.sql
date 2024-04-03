@@ -55,3 +55,5 @@ JOIN {{ source ('restaurant_silver_data', 'tb_item_categories')}} AS c
 ON
   s.item_category = c.original_category
 WHERE s.order_price > 0
+
+QUALIFY ROW_NUMBER() OVER(PARTITION BY  id_order, id_store ORDER BY  order_date_closed DESC ) = 1
