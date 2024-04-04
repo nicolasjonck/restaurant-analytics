@@ -39,3 +39,11 @@ sources:
       tables:
           - name: daily_temperature_rain
             description: daily temperature and rain data imported via API
+
+    - name: restaurant_gold_data
+      description: final restaurant data
+      database: restaurant-analytics-417114
+      schema: restaurant_tables_gold
+      tables:
+          - name: tb_sales_final
+            description: final sales data table
