@@ -66,12 +66,15 @@ def create_dags_dependencies(data: dict, dbt_tasks: dict):
     """
     tasks_to_link_to_weather = []
     for node_name, node_content in data["nodes"].items():
-            depended_on_nodes = [node for node in node_content["depends_on"]["nodes"] if node in data["nodes"]]
-            if depended_on_nodes:
-                for depended_on_node_name in depended_on_nodes:
-                    dbt_tasks[depended_on_node_name] >> dbt_tasks[node_name]
-            else:
-                tasks_to_link_to_weather.append(dbt_tasks[node_name])
+        depended_on_nodes = []
+        for depended_node in node_content["depends_on"]["nodes"]:
+                depended_node_model_name = f"model.restaurant_dbt.{depended_node.split('.')[-1]}"
+                if depended_node_model_name in data["nodes"]:
+                    depended_on_nodes.append(depended_node_model_name)
+                    dbt_tasks[depended_node_model_name] >> dbt_tasks[node_name]
+                    
+        if not depended_on_nodes and "silver" in node_content["original_file_path"]:
+            tasks_to_link_to_weather.append(dbt_tasks[node_name])
 
     return tasks_to_link_to_weather
 
