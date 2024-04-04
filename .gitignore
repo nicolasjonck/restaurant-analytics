@@ -2,3 +2,4 @@ restaurant_data/raw/*
 logs/
 database/
 dags/__pycache__/
+.env

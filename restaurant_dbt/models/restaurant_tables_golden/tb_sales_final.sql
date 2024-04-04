@@ -22,12 +22,35 @@ WITH weather_data AS (
 
 SELECT
   item_id,
-  item_name,
+  CONCAT(UPPER(SUBSTR(item_name, 1, 1)), LOWER(SUBSTR(item_name, 2))) AS order_item,
   consolidated_category,
   item_price,
   item_quantity,
   s.id_order,
   s.id_store,
+  CASE id_store
+    WHEN 7872 THEN 'Super Shisha'
+    WHEN 8291 THEN 'Eva Brunch'
+    WHEN 7786 THEN 'Smooth Coffee'
+    WHEN 7304 THEN 'Brasserie Jacques'
+    WHEN 6830 THEN 'Punjab Tandoori'
+    WHEN 6827 THEN 'Al Pronto'
+    WHEN 6008 THEN 'La Belle Fleur'
+    WHEN 5860 THEN 'Happy Duck'
+    WHEN 5617 THEN 'The Crazy Horse'
+    WHEN 5498 THEN 'Versatile'
+    WHEN 5281 THEN 'The Coffee Bean'
+    WHEN 5210 THEN 'Brasserie Maggy'
+    WHEN 4803 THEN 'The Mellow Bowl'
+    WHEN 4364 THEN 'Chez Hatem'
+    WHEN 4196 THEN 'Seabird'
+    WHEN 4151 THEN 'Beers & Pints'
+    WHEN 2035 THEN 'Manneken Pils'
+    WHEN 1513 THEN 'Kantipur Nepali'
+    WHEN 730 THEN 'Taste of Curry'
+    WHEN 360 THEN 'Bella Piazza'
+    WHEN 351 THEN 'Afterwine'
+  END as store_name,
   s.id_table,
   COALESCE(id_waiter, 000) AS id_waiter,
   order_date_opened,
@@ -35,13 +58,18 @@ SELECT
   TIMESTAMP_DIFF(order_date_closed , order_date_opened , minute) as order_duration,
   s.dim_status,
   order_price,
+  AVG(order_price) OVER (
+    PARTITION BY id_store
+    ORDER BY order_date_closed
+    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+  ) AS order_price_weekly_moving_avg,
   IF(p.m_amount - s.order_price > 0, p.m_amount - s.order_price, 0) AS order_tip,
   IF(p.m_amount - s.order_price > 0, p.m_amount - s.order_price, 0)/s.order_price as order_tip_percentage,
   IF(p.m_amount - s.order_price < 0, s.order_price - p.m_amount, 0) AS voucher_amount,
   IF(p.m_amount - s.order_price < 0, s.order_price - p.m_amount, 0)/s.order_price as voucher_percentage,
   number_customer,
   IF(TIMESTAMP_DIFF(order_date_closed , order_date_opened , minute) < 5, "take away", "dine in") AS dinner_type,
-  EXTRACT(DAYOFWEEK FROM order_date_closed) AS day_of_week,
+  FORMAT_DATE('%A', EXTRACT(DATE FROM order_date_closed)) AS day_of_week,
   EXTRACT(HOUR FROM order_date_closed) AS hour_of_day,
   avg_temp,
   rain_cm,
@@ -57,5 +85,7 @@ JOIN {{ source ('restaurant_silver_data', 'tb_item_categories')}} AS c
 ON
   s.item_category = c.original_category
 WHERE s.order_price > 0
+  AND LOWER(item_name) NOT LIKE '%deposit%'
+  AND LOWER(item_name) NOT LIKE '%conso%'
 
 QUALIFY ROW_NUMBER() OVER(PARTITION BY  id_order, id_store ORDER BY  order_date_closed DESC ) = 1

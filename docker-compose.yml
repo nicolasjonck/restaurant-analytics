@@ -28,9 +28,10 @@ services:
           - AIRFLOW__CORE__EXECUTOR=LocalExecutor
           - AIRFLOW__CORE__LOAD_EXAMPLES=false
           - PROJECT_ID=$PROJECT_ID
-          - PYTHON_PATH=/app/airflow          
+          - PYTHON_PATH=/app/airflow
           - DBT_DIR=$DBT_DIR
-          
+          - GCP_KEYS_PATH=$GCP_KEYS_PATH
+
         volumes:
           - ./dags:/app/airflow/dags
           - ./data:/app/airflow/data
@@ -38,8 +39,8 @@ services:
           - ./restaurant_dbt:/app/airflow/restaurant_dbt
           - ./restaurant_dbt:/root/.dbt
           - /home/root/.gcp_keys:/home/root/.gcp_keys
-          
-          
+
+
 
     webserver:
         build: .
@@ -63,7 +64,9 @@ services:
           - PROJECT_ID=$PROJECT_ID
           - PYTHON_PATH=/app/airflow
           - DBT_DIR=$DBT_DIR
-          
+          - GCP_KEYS_PATH=$GCP_KEYS_PATH
+
+
         volumes:
           - ./dags:/app/airflow/dags
           - ./data:/app/airflow/data
