@@ -18,3 +18,7 @@ models:
             combination_of_columns:
               - id_store
               - id_order
+  - name: tb_sales_per_weather
+    description: "Table aggregating items sold per weather type"
+    columns:
+    - name: weather_type
