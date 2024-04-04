@@ -4,7 +4,7 @@ WITH order_tips AS (
     IF(p.m_amount - order_price > 0, p.m_amount - order_price, 0) AS order_tip,
     SAFE_DIVIDE(IF(p.m_amount - order_price > 0, p.m_amount - order_price, 0), order_price) AS order_tip_percentage
   FROM 
-    {{ source('restaurant_silver_data', 'tb_sales') }}
+    {{ ref('tb_sales') }}
   JOIN 
     {{ source ('restaurant_raw_data', 'payments')}} p
   USING(id_order)
@@ -19,7 +19,7 @@ SELECT
   ROUND(SUM(order_tip)) AS total_tips,
   ROUND(AVG(order_tip), 2) AS avg_tip
 FROM 
-  {{ source('restaurant_silver_data', 'tb_sales') }}
+  {{ ref('tb_sales') }}
 JOIN 
   order_tips o
 USING(id_order)
