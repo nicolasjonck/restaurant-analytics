@@ -18,12 +18,17 @@ WITH weather_data AS (
     end as weather_type
   FROM {{ source ('weather_api_data', 'daily_temperature_rain')}}
   group by date_day
+), RankedPayments AS (
+  SELECT *,
+    ROW_NUMBER() OVER (PARTITION BY id_order ORDER BY m_amount DESC) as rank
+  FROM {{ source ('restaurant_raw_data', 'payments')}}
 )
 
 SELECT
   item_id,
   CONCAT(UPPER(SUBSTR(item_name, 1, 1)), LOWER(SUBSTR(item_name, 2))) AS order_item,
   consolidated_category,
+  item_category,
   item_price,
   item_quantity,
   s.id_order,
@@ -35,7 +40,6 @@ SELECT
     WHEN 7304 THEN 'Brasserie Jacques'
     WHEN 6830 THEN 'Punjab Tandoori'
     WHEN 6827 THEN 'Al Pronto'
-    WHEN 6008 THEN 'La Belle Fleur'
     WHEN 5860 THEN 'Happy Duck'
     WHEN 5617 THEN 'The Crazy Horse'
     WHEN 5498 THEN 'Versatile'
@@ -53,6 +57,7 @@ SELECT
   END as store_name,
   s.id_table,
   COALESCE(id_waiter, 000) AS id_waiter,
+  DATE(order_date_closed) AS order_date,
   order_date_opened,
   order_date_closed,
   TIMESTAMP_DIFF(order_date_closed , order_date_opened , minute) as order_duration,
@@ -68,16 +73,16 @@ SELECT
   IF(p.m_amount - s.order_price < 0, s.order_price - p.m_amount, 0) AS voucher_amount,
   IF(p.m_amount - s.order_price < 0, s.order_price - p.m_amount, 0)/s.order_price as voucher_percentage,
   number_customer,
-  IF(TIMESTAMP_DIFF(order_date_closed , order_date_opened , minute) < 5, "take away", "dine in") AS dinner_type,
-  FORMAT_DATE('%A', EXTRACT(DATE FROM order_date_closed)) AS day_of_week,
+  IF(TIMESTAMP_DIFF(order_date_closed , order_date_opened , minute) < 2, "take away", "dine in") AS type_dinner,
+  CONCAT(LEFT(FORMAT_DATE('%A', EXTRACT(DATE FROM order_date_closed)), 3), '.') AS day_of_week,
   EXTRACT(HOUR FROM order_date_closed) AS hour_of_day,
   avg_temp,
   rain_cm,
   weather_type
 FROM {{ source ('restaurant_silver_data','tb_sales')}} AS s
-JOIN {{ source ('restaurant_raw_data', 'payments')}} AS p
+JOIN RankedPayments AS p
 ON
-  s.id_order = p.id_order
+  s.id_order = p.id_order AND p.rank = 1
 LEFT JOIN weather_data AS w
 ON
   DATE(s.order_date_closed) = DATE(w.date_day)
@@ -87,5 +92,6 @@ ON
 WHERE s.order_price > 0
   AND LOWER(item_name) NOT LIKE '%deposit%'
   AND LOWER(item_name) NOT LIKE '%conso%'
+  AND id_store != 6008
 
-QUALIFY ROW_NUMBER() OVER(PARTITION BY  id_order, id_store ORDER BY  order_date_closed DESC ) = 1
+-- QUALIFY ROW_NUMBER() OVER(PARTITION BY  id_order, id_store ORDER BY  order_date_closed DESC ) = 1
