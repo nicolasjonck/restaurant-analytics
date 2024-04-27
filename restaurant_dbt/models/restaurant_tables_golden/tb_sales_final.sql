@@ -93,5 +93,3 @@ WHERE s.order_price > 0
   AND LOWER(item_name) NOT LIKE '%deposit%'
   AND LOWER(item_name) NOT LIKE '%conso%'
   AND id_store != 6008
-
--- QUALIFY ROW_NUMBER() OVER(PARTITION BY  id_order, id_store ORDER BY  order_date_closed DESC ) = 1
