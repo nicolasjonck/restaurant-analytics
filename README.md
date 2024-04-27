@@ -12,9 +12,9 @@ Data engineering project to help restaurants and waiters understand through dedi
 
 # Solution
 ## Restaurant sales report  
-This Looker dashboard enables restaurants to better understand sales, trends, and predict future sales
+This Looker dashboard enables restaurants to better **understand sales, trends, and predict future sales**
 
-Some valuable insights:
+Some **valuable insights**:
 - 📈 Sales trend over time
 - 🕙 Sales based on time of day / day of week
 - 🚀 Top-selling drinks and foods
@@ -24,7 +24,7 @@ Some valuable insights:
 
 
 ## Waiter performance report  
-This dashboard enables waiters to understand their sales, number of customers served, and tips
+This dashboard enables waiters to **understand their sales, number of customers served, and tips**
 
 ![image](https://github.com/nicolasjonck/restaurant-data-backend/assets/30000902/0993ab2a-684d-4d1c-bb3e-a6551fc29edf)
 
@@ -32,20 +32,20 @@ This dashboard enables waiters to understand their sales, number of customers se
 
 # Architecture
 ## Data sources:
-- Sales data: real-world point of sales data (Tiller) of 20 restaurants in Paris over a period of 7 years (2015-2021)
-- Weather data: OpenWeatherMap data
+- **Sales data**: real-world point of sales data (Tiller) of 20 restaurants in Paris over a period of 7 years (2015-2021)
+- **Weather data**: OpenWeatherMap data
 
 ## Ingestion:
 - One-off data upload to BigQuery with Python
 - Daily data fetching from OpenWeatherMap API and upload to BigQuery with Python
 
 ## Transformation:
-Since this was real world data from restaurants with different semantics, data transformations concerned 3 categories:
-- Data cleaning: remove all non-relevant order items (e.g. deposits, promotions),
-- Consolidation: unify category types from over 400 to 8 different order categories
-- Value creation: selecting only relevant columns and adding columns allowing for valuable insights (e.g. extraction of tips, dinner duration, dine-in vs take-away, mapping of weather to orders)
+Since this was real world data from restaurants with different semantics, data transformations concerned **3 categories**:
+- **Data cleaning**: remove all **non-relevant** order items (e.g. deposits, promotions),
+- **Consolidation**: unify category types from over **400 to 8 different order categories**
+- **Value creation**: selecting only relevant columns and **adding columns allowing for valuable insights** (e.g. extraction of tips, dinner duration, dine-in vs take-away, mapping of weather to orders)
 
-All data was ingested in the bronze zone, data was then cleaned and stored in the silver layer, before being aggregated to 2 final tables for exposure in the dashboard (restaurant sales and waiter performance).
+All data was ingested in the bronze zone, data was then cleaned and stored in the silver layer, before being **aggregated to 2 final tables** for exposure in the dashboard (restaurant sales and waiter performance).
 
 ## Hosting:
 Docker compose to ensure availability and scalability
