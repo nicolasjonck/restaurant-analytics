@@ -20,7 +20,8 @@ Some valuable insights:
 - 🚀 Top-selling drinks and foods
 - ☀️ Weather filter to understand which drinks and food sell better depending on temperature and rainfall/snow
 
-![image](https://github.com/nicolasjonck/restaurant-data-backend/assets/30000902/76b3d04d-151c-412d-9355-52bf716a327c)
+![image](https://github.com/nicolasjonck/restaurant-analytics/assets/30000902/d969612d-7b71-4dd0-8140-01d2778d3c4b)
+
 
 ## Waiter performance report  
 This dashboard enables waiters to understand their sales, number of customers served, and tips
